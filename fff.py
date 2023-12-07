@@ -77,10 +77,17 @@ class Character:
         if otvet1.upper() == "Y":
             VACATION_value = random.randint(1, 3000)  # Генерация случайной стоимости монеты от 1 до 200000
             print(f"GOOD, THE VACATION COSTS ${VACATION_value}")
-            self.earn_money(-VACATION_value)
+            self.earn_money(-abs(VACATION_value))
             print(f"YOU NOW HAVE {self.money}")
         else:
             return 0
+    def granny(self):
+        nasl = abs(random.randint(7000, 40000))
+        pohorony = abs(random.randint(10000, 42000))
+        print("YOUR GRANDFATHER GROVERS JUST DIED. (OH!)  HE LEFT")
+        print(f"YOU $ {nasl}, BUT FUNERAL EXPENSES ARE ${pohorony}")
+        dohod = nasl - pohorony
+        self.earn_money(dohod)
 
     def gamble(self):
         while True:
@@ -94,7 +101,7 @@ class Character:
                 if chance > 0.7:
                     loss_amount = -int(random.random() * bet)
                     print(f"HA! HA! YOU LOST ${abs(loss_amount)}")
-                    self.earn_money(abs(loss_amount))
+                    self.earn_money(abs(loss_amount) * -1 )
                     return abs(loss_amount)
                 else:
                     win_amount = int((random.random() + random.random()) * bet)
@@ -103,6 +110,10 @@ class Character:
                     return abs(win_amount)
             except ValueError:
                 print("Please enter a valid number.")
+
+    def generation(self):
+        tamm = [abs(random.randint(1980, 50001)), abs(random.randint(1980, 20001))]
+        return random.choice(tamm)
 
     def random_event(self, last_event_date):
         current_year = datetime.datetime.now().year
@@ -114,10 +125,7 @@ class Character:
             event_date = max(last_event_date, datetime.datetime(2011, 1, 1)) + datetime.timedelta(
                 days=random.randint(1, 365 * 10))
         #список ивентов
-        # YOU GO TO LAS VEGAS TO GAMBLE.  HOW MUCH DO YOU BET
-        #YOU ARE OFFERED A COIN SUPPOSEDLY WORTH $100,000.
-        #A TORNADO HAS JUST HIT THE HOME OF
-        #AN AIRPLANE HAS JUST CRASHED INTO THE HOME OF
+
         #Medical problem
         #"YOU ARE OFFERED ANOTHER JOB FOR $";E2;" A YEAR."
         #
@@ -131,12 +139,15 @@ class Character:
         #
         events = [
             "Вы нашли сокровище!",
-            "Вас ограбили, у вас украли деньги.",
-            "Вы выиграли лотерею!",
+            "A TORNADO HAS JUST HIT THE HOME OF ",
+            "YOU JUST HAD A CAR ACCIDENT!  MEDICAL COSTS",
             "Вы потратили деньги на дорогую медицинскую процедуру.",
             "YOU GO TO LAS VEGAS TO GAMBLE. HOW MUCH DO YOU BET?",
             "YOU ARE OFFERED A COIN SUPPOSEDLY WORTH $100,000.",
-            "THE DOCTOR SAYS YOU NEED A VACATION.  DO YOU GO"
+            "THE DOCTOR SAYS YOU NEED A VACATION.  DO YOU GO",
+            "YOUR HOME HAS BEEN ROBBED OF GOODS WORTH",
+            "AN AIRPLANE HAS JUST CRASHED INTO THE HOME OF ",
+            "YOUR GRANDFATHER GROVERS JUST DIED. (OH!)  HE LEFT"
         ]
 
 
@@ -149,18 +160,33 @@ class Character:
 
         print(f"{event_date.strftime('%Y-%m-%d')} | Budget: {self.money} || age {age_at_event} |{event}")
 
-        if "сокровище" in event:
-            self.earn_money(10000)
-        elif "ограбили" in event:
+        if "GROVERS" in event:
+            self.granny()
+        elif "VEGAS" in event:
             self.gamble()
         elif "COIN" in event:
             self.coin()
-        elif "COIN" in event:
+        elif "VACATION" in event:
             self.vaction()
-        elif "ограбили" in event:
-            self.earn_money(-500)
-        elif "лотерею" in event:
-            self.earn_money(2000)
+        elif "TORNADO" in event:
+            t = self.generation()
+            print(f"A TORNADO HAS JUST HIT THE HOME OF $ {t}")
+            self.earn_money(t * -1)
+            print(f"YOU NOW HAVE $ {self.money}")
+        elif "AIRPLANE" in event:
+            t = self.generation()
+            print(f"AN AIRPLANE HAS JUST CRASHED INTO THE HOME OF $ {t}")
+            self.earn_money(t * -1)
+            print(f"YOU NOW HAVE $ {self.money}")
+        elif "ROBBED" in event:
+            t = self.generation()
+            print(f"YOUR HOME HAS BEEN ROBBED OF GOODS WORTH $ {t}")
+            self.earn_money(t * -1)
+            print(f"YOU NOW HAVE $  {self.money}")
+        elif "CAR" in event:
+            t = abs(random.randint(1000, 3000))
+            print(f"YOU JUST HAD A CAR ACCIDENT!  MEDICAL COSTS $ {t}")
+            self.earn_money(t * -1)
         elif "медицинскую процедуру" in event:
             self.earn_money(-3000)
 
