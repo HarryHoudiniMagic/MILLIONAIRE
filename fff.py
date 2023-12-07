@@ -111,6 +111,17 @@ class Character:
             except ValueError:
                 print("Please enter a valid number.")
 
+    def ill(self):
+        ill = ["A HEART ATTACK", "LEUKEMIA", "CANCER"]
+        illness = random.choice(ill)
+        print(f"OH! YOU JUST GOT {illness}")
+        if illness == "A HEART ATTACK":
+            self.earn_money(abs(random.randint(3000, 5000)) * -1)
+        elif illness == "CANCER":
+            self.earn_money(abs(random.randint(50000, 150000)) * -1)
+        elif illness == "LEUKEMIA":
+            print(f"OH NO! {self.name} has been diagnosed with LEUKEMIA. The game ends.")
+            return "LEUKEMIA"
     def generation(self):
         tamm = [abs(random.randint(1980, 50001)), abs(random.randint(1980, 20001))]
         return random.choice(tamm)
@@ -124,30 +135,19 @@ class Character:
         while event_date.year <= 2010:
             event_date = max(last_event_date, datetime.datetime(2011, 1, 1)) + datetime.timedelta(
                 days=random.randint(1, 365 * 10))
-        #список ивентов
 
-        #Medical problem
-        #"YOU ARE OFFERED ANOTHER JOB FOR $";E2;" A YEAR."
-        #
-        #
-        #
-        #
-        #
-        #
-        #
-        #
-        #
         events = [
-            "Вы нашли сокровище!",
-            "A TORNADO HAS JUST HIT THE HOME OF ",
-            "YOU JUST HAD A CAR ACCIDENT!  MEDICAL COSTS",
-            "Вы потратили деньги на дорогую медицинскую процедуру.",
-            "YOU GO TO LAS VEGAS TO GAMBLE. HOW MUCH DO YOU BET?",
-            "YOU ARE OFFERED A COIN SUPPOSEDLY WORTH $100,000.",
-            "THE DOCTOR SAYS YOU NEED A VACATION.  DO YOU GO",
-            "YOUR HOME HAS BEEN ROBBED OF GOODS WORTH",
-            "AN AIRPLANE HAS JUST CRASHED INTO THE HOME OF ",
-            "YOUR GRANDFATHER GROVERS JUST DIED. (OH!)  HE LEFT"
+            #"Вы нашли сокровище!",
+            #"A TORNADO HAS JUST HIT THE HOME OF ",
+            #"YOU JUST HAD A CAR ACCIDENT!  MEDICAL COSTS",
+            #"Вы потратили деньги на дорогую медицинскую процедуру.",
+            #"YOU GO TO LAS VEGAS TO GAMBLE. HOW MUCH DO YOU BET?",
+            #"YOU ARE OFFERED A COIN SUPPOSEDLY WORTH $100,000.",
+            #"THE DOCTOR SAYS YOU NEED A VACATION.  DO YOU GO",
+            #"YOUR HOME HAS BEEN ROBBED OF GOODS WORTH",
+            #"AN AIRPLANE HAS JUST CRASHED INTO THE HOME OF ",
+            #"YOUR GRANDFATHER GROVERS JUST DIED. (OH!)  HE LEFT"
+            "OH! YOU JUST GOT "
         ]
 
 
@@ -162,6 +162,8 @@ class Character:
 
         if "GROVERS" in event:
             self.granny()
+        elif "OH!" in event:
+            self.ill()
         elif "VEGAS" in event:
             self.gamble()
         elif "COIN" in event:
@@ -187,7 +189,7 @@ class Character:
             t = abs(random.randint(1000, 3000))
             print(f"YOU JUST HAD A CAR ACCIDENT!  MEDICAL COSTS $ {t}")
             self.earn_money(t * -1)
-        elif "медицинскую процедуру" in event:
+        elif "" in event:
             self.earn_money(-3000)
 
         if event_date.year != self.birth_year:
@@ -258,9 +260,17 @@ def play_game():
 
     while character.money < goal_money:
         last_event_date = character.random_event(last_event_date)  # Передаем последнюю дату события
+        illness_status = character.ill()
         if character.age >= 100: # проверка смерти героя
             print(f"К сожалению, {character.name} умер от старости.")
             break
+        elif illness_status == "LEUKEMIA":
+            print(f"К сожалению, {character.name} умер от 8====D.")
+            break
+        elif illness_status == "HEART ATTACK" and character.age >= 70:
+            print(f"AGE OF , {character.age} ."
+                  f"YOU HAD $ {character.money}")
+
 
     if character.money >= goal_money:
         print(f"Поздравляем, {character.name} заработал миллион!")
