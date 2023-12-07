@@ -70,14 +70,22 @@ class Character:
                 return (f"YOU EARNED ${earned_money}.")
         else:
             return "You chose not to buy the coin."
+    def JOB(self):
+        t = abs(random.randint(10000, 50000))
+        print(f"YOU ARE OFFERED ANOTHER JOB FOR $ {t} A YEAR.")
+        otvet1 = input("WOULD YOU LIKE TO MOONLIGHT")
 
+        if otvet1.upper() == "Y":
+            self.earn_money(t)
+        else:
+            return 0
     def vaction(self):
         otvet1 = input("THE DOCTOR SAYS YOU NEED A VACATION.  DO YOU GO: ")
 
         if otvet1.upper() == "Y":
             VACATION_value = random.randint(1, 3000)  # Генерация случайной стоимости монеты от 1 до 200000
             print(f"GOOD, THE VACATION COSTS ${VACATION_value}")
-            self.earn_money(-abs(VACATION_value))
+            self.earn_money((abs(VACATION_value)) * -1)
             print(f"YOU NOW HAVE {self.money}")
         else:
             return 0
@@ -111,16 +119,48 @@ class Character:
             except ValueError:
                 print("Please enter a valid number.")
 
+
+    def boss_say(self):
+        frase = ["FIRED", "DECREASE", "RAISE"]
+        bos_say = random.choice(frase)
+        
+        if bos_say == "FIRED":
+            self.earn_money(abs(random.randint(3000, 5000)) * -1)
+        elif bos_say == "DECREASE":
+            self.earn_money(abs(random.randint(50000, 150000)) * -1)
+        elif bos_say == "RAISE":
+            print(f"OH NO! {self.name} has been diagnosed with LEUKEMIA. The game ends.")
+
+    def ill2(self):
+        ill = ["THE ASIO-DISPEPSIA REGIONALY HYPNOTIC FLU!(OH!).", "COMPUTER", "INFECTIOUS FATALY REOCCURING CHRONIC BAD BREATH."]
+        illness = random.choice(ill)
+        print(f"OH! YOU JUST GOT {illness}")
+        if illness == "ASIO-DISPEPSIA":
+            self.earn_money(abs(random.randint(3000, 5000)) * -1)
+        elif illness == "COMPUTER ITIS.":
+            t = abs(random.randint(3000, 5000))
+            print(f"HEALTH EXPENSES COST YOU $ {t}")
+            self.earn_money( * -1)
+        elif illness == "INFECTIOUS FATALY REOCCURING CHRONIC BAD BREATH.":
+            t = abs(random.randint(3000, 5000))
+            print(f"HEALTH EXPENSES COST YOU $ {t}")
+
+
     def ill(self):
         ill = ["A HEART ATTACK", "LEUKEMIA", "CANCER"]
         illness = random.choice(ill)
         print(f"OH! YOU JUST GOT {illness}")
         if illness == "A HEART ATTACK":
-            self.earn_money(abs(random.randint(3000, 5000)) * -1)
+            t = abs(random.randint(3000, 5000))
+            print(f"MEDICAL BILLS ARE $ {t}")
+            self.earn_money(t * -1)
         elif illness == "CANCER":
-            self.earn_money(abs(random.randint(50000, 150000)) * -1)
+            t = abs(random.randint(50000, 150000))
+            print(f"MEDICAL BILLS ARE $ {t}")
+            self.earn_money(t * -1)
         elif illness == "LEUKEMIA":
-            print(f"OH NO! {self.name} has been diagnosed with LEUKEMIA. The game ends.")
+            t = abs(random.randint(70000, 180000))
+            print(f"MEDICAL BILLS ARE $ {t}")
             return "LEUKEMIA"
     def generation(self):
         tamm = [abs(random.randint(1980, 50001)), abs(random.randint(1980, 20001))]
@@ -137,17 +177,19 @@ class Character:
                 days=random.randint(1, 365 * 10))
 
         events = [
-            #"Вы нашли сокровище!",
-            #"A TORNADO HAS JUST HIT THE HOME OF ",
-            #"YOU JUST HAD A CAR ACCIDENT!  MEDICAL COSTS",
-            #"Вы потратили деньги на дорогую медицинскую процедуру.",
-            #"YOU GO TO LAS VEGAS TO GAMBLE. HOW MUCH DO YOU BET?",
-            #"YOU ARE OFFERED A COIN SUPPOSEDLY WORTH $100,000.",
-            #"THE DOCTOR SAYS YOU NEED A VACATION.  DO YOU GO",
-            #"YOUR HOME HAS BEEN ROBBED OF GOODS WORTH",
-            #"AN AIRPLANE HAS JUST CRASHED INTO THE HOME OF ",
-            #"YOUR GRANDFATHER GROVERS JUST DIED. (OH!)  HE LEFT"
-            "OH! YOU JUST GOT "
+            "YOU JUST HAD A NERVOUS BREAKDOWN.  MEDICAL COSTS!",
+            "A TORNADO HAS JUST HIT THE HOME OF ",
+            "YOU JUST HAD A CAR ACCIDENT!  MEDICAL COSTS",
+            "Вы потратили деньги на дорогую медицинскую процедуру.",
+            "YOU GO TO LAS VEGAS TO GAMBLE. HOW MUCH DO YOU BET?",
+            "YOU ARE OFFERED A COIN SUPPOSEDLY WORTH $100,000.",
+            "THE DOCTOR SAYS YOU NEED A VACATION.  DO YOU GO",
+            "YOUR HOME HAS BEEN ROBBED OF GOODS WORTH",
+            "AN AIRPLANE HAS JUST CRASHED INTO THE HOME OF ",
+            "YOUR GRANDFATHER GROVERS JUST DIED. (OH!)  HE LEFT",
+            "OH! YOU JUST GOT ",
+            "JOB",
+            "YOU HAVE "
         ]
 
 
@@ -172,12 +214,14 @@ class Character:
             self.vaction()
         elif "TORNADO" in event:
             t = self.generation()
-            print(f"A TORNADO HAS JUST HIT THE HOME OF $ {t}")
+            print(f"NEWS FLASH!!! "
+                  f"A TORNADO HAS JUST HIT THE HOME OF $ {t}")
             self.earn_money(t * -1)
             print(f"YOU NOW HAVE $ {self.money}")
         elif "AIRPLANE" in event:
             t = self.generation()
-            print(f"AN AIRPLANE HAS JUST CRASHED INTO THE HOME OF $ {t}")
+            print(f"NEWS FLASH!!! "
+                  f"AN AIRPLANE HAS JUST CRASHED INTO THE HOME OF $ {t}")
             self.earn_money(t * -1)
             print(f"YOU NOW HAVE $ {self.money}")
         elif "ROBBED" in event:
@@ -189,8 +233,14 @@ class Character:
             t = abs(random.randint(1000, 3000))
             print(f"YOU JUST HAD A CAR ACCIDENT!  MEDICAL COSTS $ {t}")
             self.earn_money(t * -1)
-        elif "" in event:
-            self.earn_money(-3000)
+        elif "NERVOUS" in event:
+            t = abs(random.randint(2000, 3000))
+            print(f"YOU JUST HAD A NERVOUS BREAKDOWN.  MEDICAL COSTS - $ {t}")
+            self.earn_money(t * -1)
+        elif "JOB" in event:
+            self.JOB()
+        elif "YOU HAVE " in event:
+            self.ill2()
 
         if event_date.year != self.birth_year:
             self.age = age_at_event
