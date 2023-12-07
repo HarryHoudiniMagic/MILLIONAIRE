@@ -368,20 +368,37 @@ def play_game():
         last_event_date = character.random_event(last_event_date)  # Передаем последнюю дату события
         illness_status = character.ill()
         if character.age >= 100: # проверка смерти героя
-            print(f"К сожалению, {character.name} умер от старости.")
             break
         elif illness_status == "LEUKEMIA":
-            print(f"К сожалению, {character.name} умер от 8====D.")
+
             break
         elif illness_status == "HEART ATTACK" and character.age >= 70:
-            print(f"AGE OF , {character.age} ."
-                  f"YOU HAD $ {character.money}")
+            break
 
 
     if character.money >= goal_money:
-        print(f"Поздравляем, {character.name} заработал миллион!")
+        print(f"YOU ARE DEAD (COULD'NT TELL, COULD YOU?) AT THE"
+              f"AGE OF {character.age}")
+
+        print(f"{character.name} WON!!  YOU ARE A MILLIONAIRE!!"
+              f"THANKS FOR PLAYING 'MILLIONAIRE', {character.name}")
+    elif character.money > goal_money/2 and goal_money > character.money:
+        say = ["NOT BAD", "CLOSE"]
+        s1 = random.choice(say)
+        if s1 == "NOT BAD":
+            print(f"YOU ARE DEAD (COULD'NT TELL, COULD YOU?) AT THE"
+                  f"AGE OF {character.age}")
+            print(f"NOT BAD, {character.name}"
+                  f"THANKS FOR PLAYING 'MILLIONAIRE', {character.name}")
+        else:
+            print(f"YOU ARE DEAD (COULD'NT TELL, COULD YOU?) AT THE"
+                  f"AGE OF {character.age}")
+            print(f"CLOSE, {character.name}.  MAYBE NEXT LIFE.")
+
     else:
-        print(f"{character.name} не достиг миллиона и умер.")
+        print(f"YOU LOUSY #$%&'*!!! NOW YOUR POOR FAMILY HAS TO PAY."
+              f"OFF YOUR DEBTS.......................... "
+              f"THANKS FOR PLAYING 'MILLIONAIRE', {character.name}")
 
 if __name__ == "__main__":
     play_game()
