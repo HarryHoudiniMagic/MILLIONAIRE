@@ -18,8 +18,8 @@ class Character:
 
 
 
-    def age_up(self):
-        self.age += 1
+    def age_up(self, event_date):
+        self.age = event_date.year - self.birth_year
         if self.age >= 65 and random.random() < 0.05:
             print(f"К сожалению, {self.name} умер от старости.")
             return True
@@ -30,13 +30,12 @@ class Character:
 
     def random_event(self, last_event_date):
         current_year = datetime.datetime.now().year
-        last_event_date = datetime.datetime(last_event_date.year, last_event_date.month,
-                                            last_event_date.day)  # Convert last_event_date to datetime
-        event_date = max(last_event_date, datetime.datetime(current_year, 1, 1)) + datetime.timedelta(
-            days=random.randint(1, 365 * 7))
+        last_event_date = datetime.datetime(last_event_date.year, last_event_date.month, last_event_date.day)
+        event_date = max(last_event_date, datetime.datetime(2011, 1, 1)) + datetime.timedelta(
+            days=random.randint(1, 365 * 10))
 
-        while event_date.year <= 2010:  # Loop until the event date is after 2010
-            event_date = max(last_event_date, datetime.datetime(current_year, 1, 1)) + datetime.timedelta(
+        while event_date.year <= 2010:
+            event_date = max(last_event_date, datetime.datetime(2011, 1, 1)) + datetime.timedelta(
                 days=random.randint(1, 365 * 10))
 
         events = [
@@ -51,7 +50,10 @@ class Character:
             if event_date != last_event_date:
                 break
 
-        print(f"{event_date.strftime('%Y-%m-%d')} | Budget: {self.money} || a {self.age} |{event}")
+        age_at_event = event_date.year - self.birth_year
+
+        print(f"{event_date.strftime('%Y-%m-%d')} | Budget: {self.money} || age {age_at_event} |{event}")
+
         if "сокровище" in event:
             self.earn_money(10000)
         elif "ограбили" in event:
@@ -62,7 +64,7 @@ class Character:
             self.earn_money(-3000)
 
         if event_date.year != self.birth_year:
-            self.age_up()
+            self.age = age_at_event
         return event_date
 
 
