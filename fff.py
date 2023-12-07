@@ -84,14 +84,42 @@ def history():
     leave_budet = random.randint(400, 10000)
     return ushel_year, ushel_month, ushel_day, random.choice(places), random.choice(wealth_status), leave_budet
 def play_game():
-    name = input("Введите имя персонажа: ")
+    print(f"{'MILLIONAIRE':^40}")
+    print(f"{'CREATIVE CQHPUTING':^40}")
+    print(f"{'MORRISTOWN, NEW JERSEY':^40}")
+    print("\n" * 3)
+    name = input("THIS IS THE GAME OF 'MILLIONAIRE'.  ALL YOU MUST DO IS\n"
+                 "TYPE IN YOUR NAME AND ANSWER SOME QUESTIONS.  THE\n"
+                 "DECISIONS YOU MAKE WILL DETERMINE HOW MUCH MONEY YOU\n"
+                 "MAKE.  AT THE TIME OF YOUR DEATH, YOUR LIFE WILL BE\n"
+                 "RATED BY THE AMOUNT OF MONEY YOU MADE THROUGHOUT\n"
+                 "YOUR LIFE.  IF YOU HAVE MADE $1,000,000 , YOU WILL BE\n"
+                 "A MILLIONAIRE AND WIN THE GAME.  NAME PLEASE: ")
     birth_year, birth_month, birth_day = generate_random_date()
     ushel_year, ushel_month,ushel_day, places, wealth_status, leave_budet =history()
     character = Character(name, birth_year, birth_month, birth_day, ushel_year, ushel_month,ushel_day, places, wealth_status, leave_budet)
+    month_number_to_name = {
+        1: 'JAN',
+        2: 'FEB',
+        3: 'MAR',
+        4: 'APR',
+        5: 'MAY',
+        6: 'JUN',
+        7: 'JUL',
+        8: 'AUG',
+        9: 'SEP',
+        10: 'OCT',
+        11: 'NOV',
+        12: 'DEC'
+    }
     goal_money = 1000000
-    print(birth_year, ushel_year)
     last_event_date = datetime.date(character.birth_year, character.birth_month, character.birth_day)
-
+    print(f"New budget after adjusting expenses: $")
+    print("\n" * 1)
+    print("O.K., ", name, ", THIS IS YOUR NEW LIFE!")
+    print(places, "ON ",month_number_to_name[birth_month],  " ", birth_day," ,",birth_year,", ", name," IS BORN.")
+    print(wealth_status, "ON", month_number_to_name[ushel_month],  " ", ushel_day," ,",ushel_year,", ", "YOU")
+    print("LEAVE HOME WITH $", leave_budet)
     while character.money < goal_money:
         last_event_date = character.random_event(last_event_date)  # Передаем последнюю дату события
         if character.age >= 65: # проверка смерти героя
