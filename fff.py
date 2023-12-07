@@ -15,6 +15,7 @@ class Character:
         self.places = places
         self.wealth_status = wealth_status
         self.annual_income = 0
+        self.player_stocks = [0, 0, 0, 0]
 
     def get_new_job(self):
         job_options = {
@@ -35,7 +36,6 @@ class Character:
         print(f"YOU GOT A NEW JOB AS A {job_title}. YOU EARN ${annual_income} A YEAR.")
         random_percentage = round(annual_income * random.uniform(0.09, 0.13))
         adjusted_expenses = adjusted_income - random_percentage
-        print (adjusted_expenses, adjusted_income, random_percentage)
         # Увеличиваем self.money на доход от новой работы
         self.money += annual_income
         self.annual_income = annual_income
@@ -174,6 +174,51 @@ class Character:
         tamm = [abs(random.randint(1980, 50001)), abs(random.randint(1980, 20001))]
         return random.choice(tamm)
 
+    def FOND_S(self):
+        stock_prices = [100, 50, 75, 25]
+        while True:
+            print("1. IBM (INCREDIBLY BAD MACHINES)")
+            print("2. USS (USELESS & STINKY STEEL)")
+            print("3. NCR (NO CASH RETURN)")
+            print("4. TWA (TOTAL WRECK AIRLINES)")
+            choice = input("DO YOU BUY, SELL ($100 FEE), OR NOT (B,S, OR N)")
+
+            if choice.upper() == 'B':
+                stock_number = int(input("STOCK : ")) - 1
+                quantity = int(input("QUANTITY : "))
+                if self.money >= stock_prices[stock_number] * quantity:
+                    self.player_stocks[stock_number] += quantity
+                    self.earn_money( -1 *  (stock_prices[stock_number] * quantity))
+                    print("NOW YOU HAVE", self.player_stocks[stock_number], "акций компании", stock_number + 1)
+                else:
+                    print("NOT ENOUGH MONEY TO BUY")
+
+            elif choice.upper() == 'S':
+                stock_number = int(input("SALES STOCK NUMBER : ")) - 1
+                quantity = int(input("QUANTITY : "))
+                if self.player_stocks[stock_number] >= quantity:
+                    self.player_stocks[stock_number] -= quantity
+                    self.earn_money(abs(stock_prices[stock_number] * quantity))
+                    print("NOW YOU HAVE", self.player_stocks[stock_number], "STOCK", stock_number + 1)
+                else:
+                    print("YOU DO NOT HAVE ENOUGH SHARES TO SELL.")
+
+            elif choice.upper() == 'N':
+                break
+
+
+
+    def FOND_C(self):
+        stock_values = sum([self.player_stocks[i] * random.randint(0, 3) for i in range(4)])  # Сумма всех акций игрока
+        crash_value = random.randint(0, 3)  # Случайное значение краха рынка
+
+        print("Фондовый рынок рушится! Каждая ваша акция теперь стоит", crash_value)
+
+        money_from_stocks = stock_values * crash_value
+        self.earn_money((abs(money_from_stocks)) * -1)   # Деньги, полученные от продажи акций после краха рынка
+
+        print("Вы продали все ваши акции за", money_from_stocks)
+
     def random_event(self, last_event_date):
         current_year = datetime.datetime.now().year
         last_event_date = datetime.datetime(last_event_date.year, last_event_date.month, last_event_date.day)
@@ -210,7 +255,7 @@ class Character:
 
         age_at_event = event_date.year - self.birth_year
 
-        print(f"{event_date.strftime('%Y-%m-%d')} | Budget: {self.money} || age {age_at_event} |{event}")
+        print(f"{event_date.strftime('%Y-%m-%d')} ")
 
         if "GROVERS" in event:
             self.granny()
@@ -278,11 +323,6 @@ def history():
     wealth_status = ["YOUR PARENTS ARE VERY RICH.", "YOUR PARENTS ARE VERY POOR."]
     leave_budet = random.randint(400, 10000)
     return ushel_year, ushel_month, ushel_day, random.choice(places), random.choice(wealth_status), leave_budet
-
-def dead(character):
-    print(f"К сожалению, {character.name} умер.")
-    return True
-
 
 def play_game():
     print(f"{'MILLIONAIRE':^40}")
