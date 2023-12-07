@@ -75,7 +75,7 @@ class Character:
     def JOB(self):
         t = abs(random.randint(10000, 50000))
         print(f"YOU ARE OFFERED ANOTHER JOB FOR $ {t} A YEAR.")
-        otvet1 = input("WOULD YOU LIKE TO MOONLIGHT?")
+        otvet1 = input("WOULD YOU LIKE TO MOONLIGHT? ")
 
         if otvet1.upper() == "Y":
             self.earn_money(t)
@@ -197,7 +197,9 @@ class Character:
             "YOUR GRANDFATHER GROVERS JUST DIED. (OH!)  HE LEFT",
             "OH! YOU JUST GOT ",
             "JOB",
-            "YOU HAVE "
+            "YOU HAVE ",
+            "FOND SELL",
+            "FOND CRASH"
         ]
 
 
@@ -249,6 +251,10 @@ class Character:
             self.earn_money(t * -1)
         elif "JOB" in event:
             self.JOB()
+        elif "FOND SELL " in event:
+            self.FOND_S()
+        elif "FOND CRASH" in event:
+            self.FOND_C()
         elif "YOU HAVE " in event:
             self.ill2()
 
