@@ -29,7 +29,16 @@ class Character:
         self.money += amount
 
     def random_event(self, last_event_date):
-        event_date = last_event_date + datetime.timedelta(days=random.randint(1, 365*10))  # Генерируем новую дату события
+        current_year = datetime.datetime.now().year
+        last_event_date = datetime.datetime(last_event_date.year, last_event_date.month,
+                                            last_event_date.day)  # Convert last_event_date to datetime
+        event_date = max(last_event_date, datetime.datetime(current_year, 1, 1)) + datetime.timedelta(
+            days=random.randint(1, 365 * 10))
+
+        while event_date.year <= 2010:  # Loop until the event date is after 2010
+            event_date = max(last_event_date, datetime.datetime(current_year, 1, 1)) + datetime.timedelta(
+                days=random.randint(1, 365 * 10))
+
         events = [
             "Вы нашли сокровище!",
             "Вас ограбили, у вас украли деньги.",
@@ -39,7 +48,7 @@ class Character:
 
         while True:
             event = random.choice(events)
-            if event_date != last_event_date:  # Проверяем, что новая дата события отличается от предыдущей
+            if event_date != last_event_date:
                 break
 
         print(f"{event_date}: {event}")
@@ -52,11 +61,11 @@ class Character:
         elif "медицинскую процедуру" in event:
             self.earn_money(-3000)
 
-        # При наступлении нового события увеличиваем возраст на один год
         if event_date.year != self.birth_year:
             self.age_up()
-            #print(f"Возраст {self.name}: {self.age}")
         return event_date
+
+
 def generate_random_date():
     birth_year = random.randint(1980, 1990)
     birth_month = random.choice(range(1, 13))  # Выбираем месяц от 1 до 12
@@ -78,7 +87,7 @@ def play_game():
     ushel_year, ushel_month,ushel_day, places, wealth_status, leave_budet =history()
     character = Character(name, birth_year, birth_month, birth_day, ushel_year, ushel_month,ushel_day, places, wealth_status, leave_budet)
     goal_money = 1000000
-    #print(birth_year,  places ,leave_budet)
+    print(birth_year, ushel_year)
     last_event_date = datetime.date(character.birth_year, character.birth_month, character.birth_day)
 
     while character.money < goal_money:
