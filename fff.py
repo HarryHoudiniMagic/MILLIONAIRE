@@ -51,6 +51,37 @@ class Character:
     def earn_money(self, amount):
         self.money += amount
 
+    def coin(self):
+        print("YOU ARE OFFERED A COIN SUPPOSEDLY WORTH $100,000.")
+        otvet = input("DO YOU BUY IT? (Y/N): ")
+
+        if otvet.upper() == "Y":
+            coin_value = random.randint(1, 200000)  # Генерация случайной стоимости монеты от 1 до 200000
+            print(f"The coin's value is: ${coin_value}")
+            print(f"YOU NOW HAVE {self.money}")
+            if coin_value < 100000:
+                lost_money = 100000 - coin_value
+                self.earn_money(-lost_money)
+                return (f"YOU LOST ${lost_money}.")
+
+            else:
+                earned_money = coin_value - 100000
+                self.earn_money(earned_money)
+                return (f"YOU EARNED ${earned_money}.")
+        else:
+            return "You chose not to buy the coin."
+
+    def vaction(self):
+        otvet1 = input("THE DOCTOR SAYS YOU NEED A VACATION.  DO YOU GO: ")
+
+        if otvet1.upper() == "Y":
+            VACATION_value = random.randint(1, 3000)  # Генерация случайной стоимости монеты от 1 до 200000
+            print(f"GOOD, THE VACATION COSTS ${VACATION_value}")
+            self.earn_money(-VACATION_value)
+            print(f"YOU NOW HAVE {self.money}")
+        else:
+            return 0
+
     def gamble(self):
         while True:
             try:
@@ -103,8 +134,11 @@ class Character:
             "Вас ограбили, у вас украли деньги.",
             "Вы выиграли лотерею!",
             "Вы потратили деньги на дорогую медицинскую процедуру.",
-            "YOU GO TO LAS VEGAS TO GAMBLE. HOW MUCH DO YOU BET?"
+            "YOU GO TO LAS VEGAS TO GAMBLE. HOW MUCH DO YOU BET?",
+            "YOU ARE OFFERED A COIN SUPPOSEDLY WORTH $100,000.",
+            "THE DOCTOR SAYS YOU NEED A VACATION.  DO YOU GO"
         ]
+
 
         while True:
             event = random.choice(events)
@@ -119,6 +153,10 @@ class Character:
             self.earn_money(10000)
         elif "ограбили" in event:
             self.gamble()
+        elif "COIN" in event:
+            self.coin()
+        elif "COIN" in event:
+            self.vaction()
         elif "ограбили" in event:
             self.earn_money(-500)
         elif "лотерею" in event:
