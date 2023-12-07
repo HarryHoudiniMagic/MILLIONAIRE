@@ -8,12 +8,13 @@ class Character:
         self.birth_month = birth_month
         self.birth_day = birth_day
         self.age = datetime.datetime.now().year - birth_year
-        self.money = 0
+        self.money = leave_budet
         self.ushel_year = ushel_year
         self.ushel_month = ushel_month
         self.ushel_day = ushel_day
         self.places = places
         self.wealth_status = wealth_status
+        self.annual_income = 0
 
     def get_new_job(self):
         job_options = {
@@ -37,6 +38,7 @@ class Character:
         print (adjusted_expenses, adjusted_income, random_percentage)
         # Увеличиваем self.money на доход от новой работы
         self.money += annual_income
+        self.annual_income = annual_income
 
         print(f"YOU ADJUST YOUR EXPENSES TO ${adjusted_expenses} A YEAR.")
         return adjusted_expenses
@@ -73,7 +75,7 @@ class Character:
     def JOB(self):
         t = abs(random.randint(10000, 50000))
         print(f"YOU ARE OFFERED ANOTHER JOB FOR $ {t} A YEAR.")
-        otvet1 = input("WOULD YOU LIKE TO MOONLIGHT")
+        otvet1 = input("WOULD YOU LIKE TO MOONLIGHT?")
 
         if otvet1.upper() == "Y":
             self.earn_money(t)
@@ -123,13 +125,19 @@ class Character:
     def boss_say(self):
         frase = ["FIRED", "DECREASE", "RAISE"]
         bos_say = random.choice(frase)
-        
+        koff_if_zp = self.annual_income
         if bos_say == "FIRED":
-            self.earn_money(abs(random.randint(3000, 5000)) * -1)
+            print(f"YOU'RE FIRED! (HA!)")
+            self.earn_money(koff_if_zp * -1)
         elif bos_say == "DECREASE":
-            self.earn_money(abs(random.randint(50000, 150000)) * -1)
+            DECREASE = 0.1 * koff_if_zp
+            self.earn_money(-1 * DECREASE)
+            print(f"YOU GOT A RAISE OF $ {DECREASE} YOU NOW EARN $ {self.money}")
+
         elif bos_say == "RAISE":
-            print(f"OH NO! {self.name} has been diagnosed with LEUKEMIA. The game ends.")
+            RAISE = 0.1 * koff_if_zp
+            self.earn_money(RAISE)
+            print(f"YOU GOT A $ {RAISE} DECREASE IN PAY.  YOU NOW EARN$ {self.money}")
 
     def ill2(self):
         ill = ["THE ASIO-DISPEPSIA REGIONALY HYPNOTIC FLU!(OH!).", "COMPUTER", "INFECTIOUS FATALY REOCCURING CHRONIC BAD BREATH."]
@@ -180,7 +188,7 @@ class Character:
             "YOU JUST HAD A NERVOUS BREAKDOWN.  MEDICAL COSTS!",
             "A TORNADO HAS JUST HIT THE HOME OF ",
             "YOU JUST HAD A CAR ACCIDENT!  MEDICAL COSTS",
-            "Вы потратили деньги на дорогую медицинскую процедуру.",
+            "BOSS say",
             "YOU GO TO LAS VEGAS TO GAMBLE. HOW MUCH DO YOU BET?",
             "YOU ARE OFFERED A COIN SUPPOSEDLY WORTH $100,000.",
             "THE DOCTOR SAYS YOU NEED A VACATION.  DO YOU GO",
@@ -204,7 +212,9 @@ class Character:
 
         if "GROVERS" in event:
             self.granny()
-        elif "OH!" in event:
+        elif "BOSS" in event:
+            self.boss_say()
+        elif "OH! YOU JUST GOT" in event:
             self.ill()
         elif "VEGAS" in event:
             self.gamble()
