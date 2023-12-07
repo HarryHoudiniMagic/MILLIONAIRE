@@ -33,7 +33,7 @@ class Character:
         last_event_date = datetime.datetime(last_event_date.year, last_event_date.month,
                                             last_event_date.day)  # Convert last_event_date to datetime
         event_date = max(last_event_date, datetime.datetime(current_year, 1, 1)) + datetime.timedelta(
-            days=random.randint(1, 365 * 10))
+            days=random.randint(1, 365 * 7))
 
         while event_date.year <= 2010:  # Loop until the event date is after 2010
             event_date = max(last_event_date, datetime.datetime(current_year, 1, 1)) + datetime.timedelta(
@@ -51,7 +51,7 @@ class Character:
             if event_date != last_event_date:
                 break
 
-        print(f"{event_date}: {event}")
+        print(f"{event_date.strftime('%Y-%m-%d')} | Budget: {self.money} || a {self.age} |{event}")
         if "сокровище" in event:
             self.earn_money(10000)
         elif "ограбили" in event:
